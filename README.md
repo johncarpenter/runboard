@@ -44,10 +44,22 @@ history becomes your trajectory record.
 
 ## Use it from your AI assistant
 
-Portable `skills/` (SKILL.md) and an MCP server (`npx runboard-mcp`) let Claude, Cursor,
-Codex, Copilot, Gemini, and other agents run the assessment conversation and persist
-results through the same core — the numbers are always computed by the tool, never by the
-model.
+Portable `skills/` (SKILL.md) and an MCP server let Claude, Cursor, Codex, Copilot, Gemini,
+and other agents run the assessment conversation and persist results through the same core
+— the numbers are always computed by the tool, never by the model.
+
+The MCP server ships in this same package and runs locally over stdio (no network, no
+account). Add it to your client with one zero-install command:
+
+```jsonc
+{
+  "mcpServers": {
+    "runboard": { "command": "npx", "args": ["-y", "runboard", "mcp"] }
+  }
+}
+```
+
+See [docs/mcp.md](./docs/mcp.md) for Claude Desktop, Cursor, and VS Code setup.
 
 ## Contributing
 

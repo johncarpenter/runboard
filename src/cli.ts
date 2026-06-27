@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import { startMcpServer } from "../mcp/server.js";
 import { registerAssess } from "./commands/assess.js";
 import { registerBoard } from "./commands/board.js";
 import { registerInit } from "./commands/init.js";
@@ -7,8 +8,7 @@ import { registerReport } from "./commands/report.js";
 import { registerRoadmap } from "./commands/roadmap.js";
 import { UserError } from "./commands/shared.js";
 import { registerStatus } from "./commands/status.js";
-
-const VERSION = "0.1.0";
+import { VERSION } from "./version.js";
 
 export function buildProgram(): Command {
   const program = new Command();
@@ -25,9 +25,18 @@ export function buildProgram(): Command {
   registerReport(program);
   registerStatus(program);
 
+  program
+    .command("mcp")
+    .description("Start the MCP server over stdio (for tool-calling AI clients).")
+    .action(async () => {
+      await startMcpServer();
+    });
+
   return program;
 }
 
+// No side effects on import — the bin entry (src/main.ts → dist/cli.js) calls this. Tests
+// import buildProgram/main without spawning the CLI.
 export async function main(argv: string[]): Promise<void> {
   const program = buildProgram();
   try {
@@ -41,8 +50,3 @@ export async function main(argv: string[]): Promise<void> {
     throw err;
   }
 }
-
-main(process.argv).catch((err) => {
-  process.stderr.write(`${err instanceof Error ? err.message : String(err)}\n`);
-  process.exit(1);
-});

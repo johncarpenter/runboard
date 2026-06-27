@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import { VERSION } from "../src/version.js";
 import {
   handleAssess,
   handleBoard,
@@ -21,7 +22,7 @@ function json(value: unknown) {
 }
 
 export function buildServer(): McpServer {
-  const server = new McpServer({ name: "runboard", version: "0.1.0" });
+  const server = new McpServer({ name: "runboard", version: VERSION });
 
   server.registerTool(
     "runboard_assess",
@@ -78,13 +79,11 @@ export function buildServer(): McpServer {
   return server;
 }
 
-async function main(): Promise<void> {
+// Boot the server over stdio and block until the client disconnects. Importing this module
+// has NO side effects — only this call (from the `runboard-mcp` bin or `runboard mcp`
+// subcommand) starts a server, so importing `buildServer` elsewhere never spawns one.
+export async function startMcpServer(): Promise<void> {
   const server = buildServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
-
-main().catch((err) => {
-  process.stderr.write(`${err instanceof Error ? err.message : String(err)}\n`);
-  process.exit(1);
-});
