@@ -25,6 +25,7 @@ runboard pulse                # compare the two latest assessments
 runboard roadmap              # Now/Next/Later from the binding constraint
 runboard report --type board-update|baseline|monthly
 runboard status               # one-screen current state
+runboard skills install [--target <dir>] [--force] [--dry-run]   # copy these skills to an agent
 ```
 
 Dimension keys: `build.team`, `build.tools`, `build.techniques`, `run.team`, `run.tools`,
@@ -48,6 +49,11 @@ their results match the CLI exactly.
 
 `skills/*/SKILL.md` are written to the open SKILL.md standard and run unmodified across
 agent platforms. They own the conversation; the CLI owns the computation.
+
+To install them into your agent, run `runboard skills install`. With no `--target` it
+auto-detects a supported agent (v1: Claude Code → `.claude/skills/`); for any other agent
+pass `--target <its skills dir>` (e.g. `--target .cursor/skills`). Existing skills are not
+overwritten without `--force`, and `--dry-run` previews without writing.
 
 > Note: in published installs, `CLAUDE.md` is provided as a copy/symlink of this file so
 > Claude Code reads the same guidance. In this source repo, `CLAUDE.md` is the

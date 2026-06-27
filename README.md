@@ -41,6 +41,7 @@ history becomes your trajectory record.
 | `runboard roadmap` | Now/Next/Later plan from your binding constraint. |
 | `runboard report --type <t>` | Render a board-ready report from a template. |
 | `runboard status` | One-screen current state. |
+| `runboard skills install [--target <dir>]` | Copy the bundled SKILL.md skills into an agent's skills directory. |
 
 ## Use it from your AI assistant
 
@@ -60,6 +61,23 @@ account). Add it to your client with one zero-install command:
 ```
 
 See [docs/mcp.md](./docs/mcp.md) for Claude Desktop, Cursor, and VS Code setup.
+
+### Installing the skills
+
+SKILL.md is a cross-agent open format, so "installing" a skill just means copying its
+folder to wherever your agent looks for skills. `skills install` does that from the copy
+already bundled in this package — no download, no network:
+
+```bash
+npx runboard@latest skills install                 # auto-detect (Claude Code → .claude/skills/)
+npx runboard@latest skills install --target .cursor/skills   # any other agent
+npx runboard@latest skills install --dry-run       # preview; writes nothing
+npx runboard@latest skills install --force         # overwrite existing copies (e.g. after upgrade)
+```
+
+Without `--target` it auto-detects a supported agent (v1: Claude Code, via a `.claude/`
+directory). For any other agent, point `--target` at its skills directory. Existing skills
+are never overwritten without `--force`. Restart your agent afterward so it discovers them.
 
 ## Contributing
 
