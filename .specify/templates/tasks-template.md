@@ -9,7 +9,7 @@ description: "Task list template for feature implementation"
 
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Per Constitution Principle IV (Test Coverage Across Every Command, NON-NEGOTIABLE), every CLI command MUST carry test tasks and `src/core/` functions MUST be unit-tested first. The generic "tests are optional" default does NOT apply to this project — include test tasks for every command and core function.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
