@@ -22,6 +22,7 @@ export interface InstallReport {
   dryRun: boolean;
   installed: string[];
   skipped: string[];
+  failed: { name: string; error: string }[];
   actions: SkillAction[];
 }
 
@@ -47,28 +48,33 @@ export function runSkillsInstall(opts: SkillsInstallOptions = {}): InstallReport
 
   const installed: string[] = [];
   const skipped: string[] = [];
+  const failed: { name: string; error: string }[] = [];
 
-  if (!dryRun) {
-    mkdirSync(destination, { recursive: true });
+  if (dryRun) {
+    return { destination, dryRun, installed, skipped, failed, actions };
   }
+
+  mkdirSync(destination, { recursive: true });
 
   for (const action of actions) {
     if (action.kind === "skip") {
       skipped.push(action.name);
       continue;
     }
-    if (!dryRun) {
-      const skill = bundled.find((b) => b.name === action.name);
-      if (!skill) {
-        // Every action.name originates from `bundled`; satisfies the type checker.
-        throw new Error(`unreachable: planned skill ${action.name} not in bundle`);
-      }
-      copySkill(skill.sourceDir, destination);
+    const skill = bundled.find((b) => b.name === action.name);
+    if (!skill) {
+      // Every action.name originates from `bundled`; satisfies the type checker.
+      throw new Error(`unreachable: planned skill ${action.name} not in bundle`);
     }
-    installed.push(action.name);
+    try {
+      copySkill(skill.sourceDir, destination);
+      installed.push(action.name);
+    } catch (err) {
+      failed.push({ name: action.name, error: err instanceof Error ? err.message : String(err) });
+    }
   }
 
-  return { destination, dryRun, installed, skipped, actions };
+  return { destination, dryRun, installed, skipped, failed, actions };
 }
 
 function resolveDestination(root: string, target?: string): string {
@@ -106,9 +112,13 @@ function formatReport(report: InstallReport): string {
     return `${lines.join("\n")}\n`;
   }
 
+  const failedNames = new Set(report.failed.map((f) => f.name));
   lines.push(`Installing skills into ${report.destination}`);
   for (const action of report.actions) {
-    if (action.kind === "skip") {
+    const failure = report.failed.find((f) => f.name === action.name);
+    if (failure) {
+      lines.push(`  ✗ ${action.name.padEnd(14)}(failed: ${failure.error})`);
+    } else if (action.kind === "skip") {
       lines.push(
         `  - ${action.name.padEnd(14)}(skipped: already present, use --force to overwrite)`,
       );
@@ -118,8 +128,9 @@ function formatReport(report: InstallReport): string {
     }
   }
   lines.push("");
+  const tail = failedNames.size > 0 ? `, ${failedNames.size} failed` : "";
   lines.push(
-    `Installed ${report.installed.length} skill(s), skipped ${report.skipped.length}. Restart your agent to pick them up.`,
+    `Installed ${report.installed.length} skill(s), skipped ${report.skipped.length}${tail}. Restart your agent to pick them up.`,
   );
   return `${lines.join("\n")}\n`;
 }
@@ -140,5 +151,10 @@ export function registerSkills(program: Command): void {
         dryRun: options.dryRun,
       });
       process.stdout.write(formatReport(report));
+      if (report.failed.length > 0) {
+        // Some copies failed; the report above lists which. Exit non-zero per the
+        // CLI contract without crashing on a raw filesystem stack trace.
+        process.exitCode = 1;
+      }
     });
 }

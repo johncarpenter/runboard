@@ -89,11 +89,27 @@ describe("skills install — re-install safety and preview (US3)", () => {
     expect(readFileSync(file, "utf8")).not.toBe("EDITED");
   });
 
-  it("writes nothing in --dry-run", () => {
+  it("writes nothing in --dry-run and does not mark anything installed", () => {
     const dest = path.join(root, "out");
     const report = runSkillsInstall({ root, target: "out", dryRun: true });
     expect(report.dryRun).toBe(true);
     expect(report.actions.every((a) => a.kind === "create")).toBe(true);
+    expect(report.installed).toHaveLength(0);
     expect(existsSync(dest)).toBe(false);
+  });
+
+  it("records a copy failure instead of crashing, and excludes it from installed", () => {
+    // A pre-existing *file* where a skill folder should go makes the recursive
+    // directory copy fail for that one skill — a deterministic mid-run error.
+    const name = bundledNames()[0] as string;
+    const dest = path.join(root, "out");
+    mkdirSync(dest, { recursive: true });
+    writeFileSync(path.join(dest, name), "blocker", "utf8");
+
+    const report = runSkillsInstall({ root, target: "out" });
+    expect(report.failed.map((f) => f.name)).toContain(name);
+    expect(report.installed).not.toContain(name);
+    // The other skills still install.
+    expect(report.installed.length).toBeGreaterThan(0);
   });
 });

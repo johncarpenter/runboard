@@ -99,9 +99,11 @@ What the command prints and tests assert on.
 ```ts
 interface InstallReport {
   destination: string;
-  installed: string[];   // create + overwrite that succeeded
+  dryRun: boolean;
+  installed: string[];   // create + overwrite that actually wrote (empty in dry-run)
   skipped: string[];     // skip actions
-  failed?: { name: string; error: string }[]; // any copy that threw
+  failed: { name: string; error: string }[]; // any copy that threw (empty on success)
+  actions: SkillAction[];
 }
 ```
 
