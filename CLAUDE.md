@@ -61,5 +61,5 @@ The Spec Kit marker block at the bottom of this file is managed by
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/001-runboard-cli/plan.md
+at /Users/john/Documents/Workspace/2Lines/runboard-cli/specs/002-mcp-distribution/plan.md
 <!-- SPECKIT END -->
