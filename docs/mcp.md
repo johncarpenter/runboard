@@ -8,6 +8,9 @@ always computed by the tool, never by the model.
 It runs **locally over stdio**. No account, no network calls, no hosted service — exactly
 like the CLI.
 
+This page covers desktop apps and editors. For provider CLIs (Claude Code, OpenAI Codex,
+Gemini CLI), see [integrations.md](./integrations.md).
+
 ## Zero-install setup
 
 Prerequisite: Node ≥ 20. Nothing to clone or build.
