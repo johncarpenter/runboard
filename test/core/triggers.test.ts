@@ -52,4 +52,15 @@ describe("detectTriggers", () => {
     ];
     expect(detectTriggers(history)).not.toContain("plan.tools");
   });
+
+  it("does not flag a dimension already at the maximum level", () => {
+    const history = [
+      build("2026-01-01", { "build.tools": 5 }, 2),
+      build("2026-02-01", { "build.tools": 5 }, 2),
+      build("2026-03-01", { "build.tools": 5 }, 2),
+    ];
+    const triggers = detectTriggers(history);
+    expect(triggers).not.toContain("build.tools"); // optimised, not stuck
+    expect(triggers).toContain("build.team"); // genuinely flat at level 2
+  });
 });

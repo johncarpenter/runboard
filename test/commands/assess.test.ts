@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { parseSetEntry, runAssess } from "../../src/commands/assess.js";
+import { parseSetEntry, runAssess, today } from "../../src/commands/assess.js";
 import { UserError } from "../../src/commands/shared.js";
 import { loadAssessment } from "../../src/data/assessments.js";
 import { assessmentFile } from "../../src/data/paths.js";
@@ -11,6 +11,14 @@ beforeEach(() => {
   root = initRepo();
 });
 afterEach(() => cleanup(root));
+
+describe("today", () => {
+  it("returns the local calendar date as YYYY-MM-DD", () => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    expect(today()).toBe(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`);
+  });
+});
 
 describe("parseSetEntry", () => {
   it("parses dim=level:traj:evidence", () => {
@@ -49,6 +57,12 @@ describe("assess (non-interactive)", () => {
   it("rejects a missing dimension naming it", () => {
     const partial = setFlags().filter((f) => !f.startsWith("run.team"));
     expect(() => runAssess({ root, sets: partial, date: "2026-06-27" })).toThrow(/run.team/);
+  });
+
+  it("rejects an invalid --type instead of silently defaulting", () => {
+    expect(() =>
+      runAssess({ root, sets: setFlags(), type: "basline", date: "2026-06-27" }),
+    ).toThrow(/Invalid --type/);
   });
 
   it("refuses to overwrite the same day without --force", () => {

@@ -15,7 +15,11 @@ import { loadRubric } from "../data/rubric.js";
 import { UserError, requireInit } from "./shared.js";
 
 export function today(): string {
-  return new Date().toISOString().slice(0, 10);
+  // Local calendar date — using toISOString() here would roll over at UTC midnight,
+  // mis-dating assessments (and the same-day overwrite guard) for offset timezones.
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
 // Parse a `<dim>=<level>:<traj>:<evidence>` flag into a raw score entry.
@@ -51,15 +55,20 @@ function defaultType(root: string): AssessmentType {
   return listAssessmentDates(root).length === 0 ? "baseline" : "pulse";
 }
 
+// Validate an explicit --type (if any), else fall back to the default. Throws on a typo.
+function resolveType(rawType: string | undefined, root: string): AssessmentType {
+  if (rawType !== undefined && !isAssessmentType(rawType)) {
+    throw new UserError(`Invalid --type "${rawType}". Use baseline, pulse, quarterly, or event.`);
+  }
+  return rawType ?? defaultType(root);
+}
+
 // Non-interactive path (used by the CLI --set flow and by tests / agents).
 export function runAssess(opts: AssessOptions): { date: string; path: string } {
   const root = opts.root ?? process.cwd();
   requireInit(root);
   const date = opts.date ?? today();
-  const type = opts.type ?? defaultType(root);
-  if (!isAssessmentType(type)) {
-    throw new UserError(`Invalid --type "${type}". Use baseline, pulse, quarterly, or event.`);
-  }
+  const type = resolveType(opts.type, root);
 
   const raw: Record<string, unknown> = {};
   for (const entry of opts.sets ?? []) {
@@ -76,6 +85,7 @@ async function runInteractive(opts: AssessOptions): Promise<{ date: string; path
   const root = opts.root ?? process.cwd();
   requireInit(root);
   const date = opts.date ?? today();
+  const type = resolveType(opts.type, root); // validate before prompting, not after
   const rubric = loadRubric(runboardPaths(root).rubric);
 
   intro("Runboard assessment");
@@ -105,7 +115,6 @@ async function runInteractive(opts: AssessOptions): Promise<{ date: string; path
   }
 
   const scores = validateScores(raw);
-  const type = opts.type && isAssessmentType(opts.type) ? opts.type : defaultType(root);
   const path = saveAssessment({ date, type, scores }, root, { force: opts.force });
   outro(`Saved ${path}. Run \`runboard board\` to see your scorecard.`);
   return { date, path };
