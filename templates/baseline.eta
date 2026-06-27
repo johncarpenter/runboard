@@ -1,0 +1,10 @@
+# Baseline Assessment — <%= it.date %>
+
+Overall maturity **<%= it.average %> / 5** across nine dimensions.
+
+| Dimension | Level | Trajectory | Evidence |
+|-----------|-------|------------|----------|
+<% it.rows.forEach(function(r){ %>| <%= r.title %> | <%= r.level %> | <%= r.trajectory %> | <%= r.evidence %> |
+<% }) %>
+
+**Binding constraint:** <%= it.constraint.title %> (level <%= it.constraint.level %>).
