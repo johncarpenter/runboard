@@ -7,6 +7,7 @@ import { registerPulse } from "./commands/pulse.js";
 import { registerReport } from "./commands/report.js";
 import { registerRoadmap } from "./commands/roadmap.js";
 import { UserError } from "./commands/shared.js";
+import { registerSkills } from "./commands/skills.js";
 import { registerStatus } from "./commands/status.js";
 import { VERSION } from "./version.js";
 
@@ -24,6 +25,7 @@ export function buildProgram(): Command {
   registerRoadmap(program);
   registerReport(program);
   registerStatus(program);
+  registerSkills(program);
 
   program
     .command("mcp")
