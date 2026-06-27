@@ -59,9 +59,11 @@ export function runSkillsInstall(opts: SkillsInstallOptions = {}): InstallReport
     }
     if (!dryRun) {
       const skill = bundled.find((b) => b.name === action.name);
-      if (skill) {
-        copySkill(skill.sourceDir, destination);
+      if (!skill) {
+        // Every action.name originates from `bundled`; satisfies the type checker.
+        throw new Error(`unreachable: planned skill ${action.name} not in bundle`);
       }
+      copySkill(skill.sourceDir, destination);
     }
     installed.push(action.name);
   }
