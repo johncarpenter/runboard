@@ -1,6 +1,6 @@
 {
   "name": "runboard",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Local-first CLI for the Runboard technical-leadership maturity framework. Deterministic scoring core, portable AI adapters, no phone-home.",
   "type": "module",
   "license": "MIT",
