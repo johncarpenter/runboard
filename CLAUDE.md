@@ -59,13 +59,7 @@ The Spec Kit marker block at the bottom of this file is managed by
 `/speckit-agent-context-update` — leave it for that tooling to maintain.
 
 <!-- SPECKIT START -->
-Active feature: `001-runboard-cli`. For technologies, project structure, shell
-commands, and design decisions, read the current plan and its design artifacts:
-
-- Plan: `specs/001-runboard-cli/plan.md`
-- Spec: `specs/001-runboard-cli/spec.md`
-- Research (library choices): `specs/001-runboard-cli/research.md`
-- Data model: `specs/001-runboard-cli/data-model.md`
-- Contracts: `specs/001-runboard-cli/contracts/` (CLI commands, MCP tools)
-- Quickstart: `specs/001-runboard-cli/quickstart.md`
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+at specs/001-runboard-cli/plan.md
 <!-- SPECKIT END -->
