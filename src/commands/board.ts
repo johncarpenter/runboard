@@ -1,6 +1,7 @@
 import { writeFileSync } from "node:fs";
 import type { Command } from "commander";
-import { summarise } from "../core/score.js";
+import { type BoardSummary, summarise } from "../core/score.js";
+import type { Assessment } from "../core/types.js";
 import { latestAssessment, listAssessmentDates } from "../data/assessments.js";
 import { runboardPaths } from "../data/paths.js";
 import { loadRubric } from "../data/rubric.js";
@@ -13,7 +14,14 @@ export interface BoardOptions {
   html?: boolean;
 }
 
-export function runBoard(opts: BoardOptions = {}): { text: string; htmlPath?: string } {
+export interface BoardResult {
+  text: string;
+  assessment: Assessment;
+  summary: BoardSummary;
+  htmlPath?: string;
+}
+
+export function runBoard(opts: BoardOptions = {}): BoardResult {
   const root = opts.root ?? process.cwd();
   requireInit(root);
   requireAssessments(listAssessmentDates(root));
@@ -29,9 +37,9 @@ export function runBoard(opts: BoardOptions = {}): { text: string; htmlPath?: st
     const rubric = loadRubric(runboardPaths(root).rubric);
     const htmlPath = runboardPaths(root).boardHtml;
     writeFileSync(htmlPath, renderBoardHtml(assessment, summary, rubric), "utf8");
-    return { text, htmlPath };
+    return { text, assessment, summary, htmlPath };
   }
-  return { text };
+  return { text, assessment, summary };
 }
 
 export function registerBoard(program: Command): void {

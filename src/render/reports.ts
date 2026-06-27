@@ -2,9 +2,9 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Eta } from "eta";
-import { UserError } from "../commands/shared.js";
 import { bindingConstraint, rankConstraints } from "../core/constraints.js";
 import { computeDeltas } from "../core/delta.js";
+import { UserError } from "../core/errors.js";
 import { formatAverage, summarise } from "../core/score.js";
 import { detectTriggers } from "../core/triggers.js";
 import {

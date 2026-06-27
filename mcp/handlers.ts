@@ -7,7 +7,7 @@ import { runStatus } from "../src/commands/status.js";
 // Thin handlers shared by the MCP server. They call the SAME core + data modules the CLI
 // uses — no scoring/delta/trigger logic lives here (Constitution Principle III).
 import { bindingConstraint } from "../src/core/constraints.js";
-import { formatAverage, summarise } from "../src/core/score.js";
+import { formatAverage } from "../src/core/score.js";
 import { detectTriggers } from "../src/core/triggers.js";
 import { latestAssessment } from "../src/data/assessments.js";
 
@@ -37,10 +37,8 @@ export function handleAssess(args: {
 }
 
 export function handleBoard(ctx: HandlerContext & { html?: boolean }) {
-  const { htmlPath } = runBoard({ root: ctx.root, html: ctx.html });
-  const latest = latestAssessment(ctx.root);
-  if (!latest) throw new Error("unreachable");
-  const summary = summarise(latest);
+  // Reuse the summary runBoard already computed — one consistent snapshot.
+  const { summary, htmlPath } = runBoard({ root: ctx.root, html: ctx.html });
   return {
     cells: summary.cells,
     average: formatAverage(summary.average),

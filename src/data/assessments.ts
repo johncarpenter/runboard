@@ -69,7 +69,15 @@ export function parseAssessment(text: string, fallbackDate?: string): Assessment
   if (!DATE_RE.test(date)) {
     throw new AssessmentError(`Assessment has an invalid date: "${date}".`);
   }
-  const type: AssessmentType = isAssessmentType(raw.type) ? raw.type : "baseline";
+  let type: AssessmentType = "baseline";
+  if (raw.type !== undefined) {
+    if (!isAssessmentType(raw.type)) {
+      throw new AssessmentError(
+        `Assessment ${date} has an invalid type "${String(raw.type)}" (use baseline, pulse, quarterly, or event).`,
+      );
+    }
+    type = raw.type;
+  }
   const scores = validateScores(raw.scores);
   const narrative = (match[2] ?? "").trim();
   return {

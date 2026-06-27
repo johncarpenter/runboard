@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
+import { UserError } from "../core/errors.js";
 import { runboardPaths } from "../data/paths.js";
 
-// Thrown for expected, user-facing errors. The CLI prints the message and exits 1.
-export class UserError extends Error {}
+export { UserError };
 
 export function requireInit(root: string = process.cwd()): void {
   if (!existsSync(runboardPaths(root).dir)) {

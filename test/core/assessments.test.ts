@@ -63,6 +63,12 @@ describe("serialize/parse round trip", () => {
     expect(parsed.date).toBe("2026-06-27");
     expect(parsed.scores["build.team"].level).toBe(3);
   });
+
+  it("rejects an unrecognised type rather than silently defaulting", () => {
+    const a = assessment("2026-06-27");
+    const text = serializeAssessment(a).replace("type: baseline", "type: Pulse");
+    expect(() => parseAssessment(text)).toThrow(/invalid type/);
+  });
 });
 
 describe("save/load", () => {
