@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
@@ -22,17 +22,24 @@ describe("publishable package contents", () => {
     expect(pkg.files).toContain("dist");
   });
 
-  it("npm pack would include dist/mcp.js when built", () => {
-    const out = execFileSync("npm", ["pack", "--dry-run", "--json"], {
-      cwd: repoRoot,
-      encoding: "utf8",
-    });
-    const files: string[] = JSON.parse(out)[0].files.map((f: { path: string }) => f.path);
-    // package.json is always present; dist/mcp.js is present once a build has run.
-    expect(files).toContain("package.json");
-    if (existsSync(path.join(repoRoot, "dist", "mcp.js"))) {
+  describe("the packed tarball", () => {
+    // The test suite runs before `build` in CI, so ensure the artifact exists first —
+    // otherwise this assertion would silently pass on an unbuilt tree (FR-003).
+    beforeAll(() => {
+      if (!existsSync(path.join(repoRoot, "dist", "mcp.js"))) {
+        execFileSync("npm", ["run", "build"], { cwd: repoRoot, stdio: "ignore" });
+      }
+    }, 120_000);
+
+    it("includes both built bin entries", () => {
+      const out = execFileSync("npm", ["pack", "--dry-run", "--json"], {
+        cwd: repoRoot,
+        encoding: "utf8",
+      });
+      const files: string[] = JSON.parse(out)[0].files.map((f: { path: string }) => f.path);
       expect(files).toContain("dist/mcp.js");
       expect(files).toContain("dist/cli.js");
-    }
+      expect(files).toContain("package.json");
+    });
   });
 });
