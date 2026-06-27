@@ -53,3 +53,10 @@ Render a report from a template using the latest data:
 
 One-screen current state: latest assessment date, overall average, trajectory counts, and
 any active auto-triggers.
+
+## `runboard mcp`
+
+Start the MCP server over stdio for tool-calling AI clients. Blocks until the client
+disconnects; it exposes the same capabilities as the commands above through MCP tools. This
+is the canonical zero-install entry — clients invoke it as `npx -y runboard mcp`. See
+[mcp.md](./mcp.md) for client configuration.

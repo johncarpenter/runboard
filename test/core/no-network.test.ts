@@ -39,6 +39,14 @@ describe("no network usage in shipped code", () => {
     expect(files.length).toBeGreaterThan(10);
   });
 
+  it("covers the MCP server boot path", () => {
+    // FR-005 / SC-004: the files that start and back the server must be in scope.
+    const rel = files.map((f) => path.relative(repoRoot, f));
+    expect(rel).toContain("mcp/server.ts");
+    expect(rel).toContain("mcp/main.ts");
+    expect(rel).toContain("src/version.ts");
+  });
+
   for (const file of files) {
     it(`is network-free: ${path.relative(repoRoot, file)}`, () => {
       const text = readFileSync(file, "utf8");

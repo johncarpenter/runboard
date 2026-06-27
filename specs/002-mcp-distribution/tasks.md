@@ -28,8 +28,8 @@ Single project — `src/`, `mcp/`, `test/`, `docs/` at repository root (per plan
 
 **Purpose**: Confirm the distribution metadata and build are wired for two bins.
 
-- [ ] T001 [P] Finalize distribution metadata in `package.json`: confirm `bin.runboard` → `dist/cli.js` and `bin.runboard-mcp` → `dist/mcp.js`, `files` includes `dist`, and the `prepublishOnly` gate (lint → typecheck → test → build) is present and committed.
-- [ ] T002 [P] Verify `tsup.config.ts` builds both `cli` (`src/cli.ts`) and `mcp` (`mcp/server.ts`) entries with the Node shebang banner; run `npm run build` and confirm `dist/cli.js` and `dist/mcp.js` are emitted.
+- [X] T001 [P] Finalize distribution metadata in `package.json`: confirm `bin.runboard` → `dist/cli.js` and `bin.runboard-mcp` → `dist/mcp.js`, `files` includes `dist`, and the `prepublishOnly` gate (lint → typecheck → test → build) is present and committed.
+- [X] T002 [P] Verify `tsup.config.ts` builds both `cli` (`src/cli.ts`) and `mcp` (`mcp/server.ts`) entries with the Node shebang banner; run `npm run build` and confirm `dist/cli.js` and `dist/mcp.js` are emitted.
 
 ---
 
@@ -39,8 +39,8 @@ Single project — `src/`, `mcp/`, `test/`, `docs/` at repository root (per plan
 
 **⚠️ CRITICAL**: No user story work should rely on the version until this phase is complete.
 
-- [ ] T003 Write a failing unit test in `test/core/version.test.ts` asserting the version module's exported value equals `package.json`'s `version`.
-- [ ] T004 Implement `src/version.ts` that resolves the version from `package.json` (single source of truth); make T003 pass.
+- [X] T003 Write a failing unit test in `test/core/version.test.ts` asserting the version module's exported value equals `package.json`'s `version`.
+- [X] T004 Implement `src/version.ts` that resolves the version from `package.json` (single source of truth); make T003 pass.
 
 **Checkpoint**: One version constant exists; CLI and MCP can both import it.
 
@@ -54,14 +54,14 @@ Single project — `src/`, `mcp/`, `test/`, `docs/` at repository root (per plan
 
 ### Tests for User Story 1
 
-- [ ] T005 [P] [US1] Write `test/commands/mcp-smoke.test.ts`: boot the server over stdio, list tools and assert all six are present, assert the server's reported version equals `package.json` version, and assert that invoking a tool in an uninitialised directory returns descriptive guidance rather than throwing (FR-002, FR-004, FR-009). Ensure it FAILS first.
+- [X] T005 [P] [US1] Write `test/commands/mcp-smoke.test.ts`: boot the server over stdio, list tools and assert all six are present, assert the server's reported version equals `package.json` version, and assert that invoking a tool in an uninitialised directory returns descriptive guidance rather than throwing (FR-002, FR-004, FR-009). Ensure it FAILS first.
 
 ### Implementation for User Story 1
 
-- [ ] T006 [US1] Refactor `mcp/server.ts`: extract `startMcpServer()` (build server + connect `StdioServerTransport`), import the version from `src/version.ts` (remove the hardcoded `"0.1.0"`), and guard the auto-run so importing the module does NOT start the server (only the `runboard-mcp` bin entry starts it).
-- [ ] T007 [US1] Add an `mcp` subcommand in `src/cli.ts` that calls `startMcpServer()`, and switch the CLI `--version` to import from `src/version.ts` (remove the hardcoded `"0.1.0"`). Depends on T006.
-- [ ] T008 [P] [US1] Write `docs/mcp.md` with copy-paste client configuration for Claude Desktop, Cursor, and VS Code using `npx -y runboard mcp`, plus the `npx -y -p runboard runboard-mcp` fallback (FR-008).
-- [ ] T009 [P] [US1] Update the "Use it from your AI assistant" section of `README.md` with the canonical `npx -y runboard mcp` command and a link to `docs/mcp.md` (FR-011).
+- [X] T006 [US1] Refactor `mcp/server.ts`: extract `startMcpServer()` (build server + connect `StdioServerTransport`), import the version from `src/version.ts` (remove the hardcoded `"0.1.0"`), and guard the auto-run so importing the module does NOT start the server (only the `runboard-mcp` bin entry starts it).
+- [X] T007 [US1] Add an `mcp` subcommand in `src/cli.ts` that calls `startMcpServer()`, and switch the CLI `--version` to import from `src/version.ts` (remove the hardcoded `"0.1.0"`). Depends on T006.
+- [X] T008 [P] [US1] Write `docs/mcp.md` with copy-paste client configuration for Claude Desktop, Cursor, and VS Code using `npx -y runboard mcp`, plus the `npx -y -p runboard runboard-mcp` fallback (FR-008).
+- [X] T009 [P] [US1] Update the "Use it from your AI assistant" section of `README.md` with the canonical `npx -y runboard mcp` command and a link to `docs/mcp.md` (FR-011).
 
 **Checkpoint**: `npx -y runboard mcp` boots the server; T005 passes; docs let a user self-serve. MVP deliverable.
 
@@ -75,12 +75,12 @@ Single project — `src/`, `mcp/`, `test/`, `docs/` at repository root (per plan
 
 ### Tests for User Story 2
 
-- [ ] T010 [P] [US2] Extend `test/commands/mcp-parity.test.ts` to cover all six tools (assess, board, pulse, roadmap, report, status), asserting each tool's computed fields equal the corresponding CLI command output for the same fixture (FR-006, SC-002).
+- [X] T010 [P] [US2] Extend `test/commands/mcp-parity.test.ts` to cover all six tools (assess, board, pulse, roadmap, report, status), asserting each tool's computed fields equal the corresponding CLI command output for the same fixture (FR-006, SC-002).
 
 ### Implementation for User Story 2
 
-- [ ] T011 [US2] Make any fixes the extended parity test surfaces in `mcp/handlers.ts` so all six tools match the CLI exactly. Depends on T010.
-- [ ] T012 [US2] Confirm no scoring/delta/trigger/constraint logic is duplicated in `mcp/handlers.ts` or `mcp/server.ts` — all computation must come via `src/core/` (FR-007, Principle III).
+- [X] T011 [US2] Make any fixes the extended parity test surfaces in `mcp/handlers.ts` so all six tools match the CLI exactly. Depends on T010.
+- [X] T012 [US2] Confirm no scoring/delta/trigger/constraint logic is duplicated in `mcp/handlers.ts` or `mcp/server.ts` — all computation must come via `src/core/` (FR-007, Principle III).
 
 **Checkpoint**: MCP and CLI are provably in lockstep on results.
 
@@ -94,15 +94,15 @@ Single project — `src/`, `mcp/`, `test/`, `docs/` at repository root (per plan
 
 ### Tests for User Story 3
 
-- [ ] T013 [P] [US3] Write `test/packaging/pack-contents.test.ts` asserting `npm pack --dry-run --json` output includes `dist/mcp.js` and declares both `runboard` and `runboard-mcp` bins (FR-003, SC-005). Ensure it FAILS if either is missing.
-- [ ] T015 [P] [US3] Extend `test/core/no-network.test.ts` to assert the server boot path (`startMcpServer`) opens no sockets / makes no outbound connections (FR-005, SC-004).
-- [ ] T016 [P] [US3] Write `test/commands/version-lockstep.test.ts` asserting CLI `--version` == MCP server reported version == `package.json` version (FR-004, SC-003).
+- [X] T013 [P] [US3] Write `test/packaging/pack-contents.test.ts` asserting `npm pack --dry-run --json` output includes `dist/mcp.js` and declares both `runboard` and `runboard-mcp` bins (FR-003, SC-005). Ensure it FAILS if either is missing.
+- [X] T015 [P] [US3] Extend `test/core/no-network.test.ts` to assert the server boot path (`startMcpServer`) opens no sockets / makes no outbound connections (FR-005, SC-004).
+- [X] T016 [P] [US3] Write `test/commands/version-lockstep.test.ts` asserting CLI `--version` == MCP server reported version == `package.json` version (FR-004, SC-003).
 
 ### Implementation for User Story 3
 
-- [ ] T014 [US3] Adjust `package.json` `files`/`bin` if needed so T013 passes. Depends on T013.
-- [ ] T017 [US3] Add an MCP entry smoke step to `.github/workflows/ci.yml` (after build: boot `dist/mcp.js` over stdio and list tools) alongside the existing `node dist/cli.js --version` (FR-010).
-- [ ] T018 [US3] Confirm the `prepublishOnly` gate in `package.json` runs lint → typecheck → test → build and document the one-action release flow (cross-check against `quickstart.md`).
+- [X] T014 [US3] Adjust `package.json` `files`/`bin` if needed so T013 passes. Depends on T013.
+- [X] T017 [US3] Add an MCP entry smoke step to `.github/workflows/ci.yml` (after build: boot `dist/mcp.js` over stdio and list tools) alongside the existing `node dist/cli.js --version` (FR-010).
+- [X] T018 [US3] Confirm the `prepublishOnly` gate in `package.json` runs lint → typecheck → test → build and document the one-action release flow (cross-check against `quickstart.md`).
 
 **Checkpoint**: A broken or incomplete MCP artifact fails CI before it can ship; one publish delivers both surfaces in lockstep.
 
@@ -110,9 +110,9 @@ Single project — `src/`, `mcp/`, `test/`, `docs/` at repository root (per plan
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T019 [P] Note the `runboard mcp` subcommand in `docs/commands.md` so the command reference is complete (Principle V).
-- [ ] T020 Run the `quickstart.md` validation: configure at least one real client with `npx -y runboard mcp` and confirm the tools load and a call returns (SC-001, SC-006).
-- [ ] T021 [P] Final `biome` lint/format pass and confirm the full `vitest` suite is green.
+- [X] T019 [P] Note the `runboard mcp` subcommand in `docs/commands.md` so the command reference is complete (Principle V).
+- [X] T020 Run the `quickstart.md` validation: configure at least one real client with `npx -y runboard mcp` and confirm the tools load and a call returns (SC-001, SC-006).
+- [X] T021 [P] Final `biome` lint/format pass and confirm the full `vitest` suite is green.
 
 ---
 
