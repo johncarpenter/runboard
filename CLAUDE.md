@@ -55,9 +55,17 @@ This project is driven by **Spec Kit** (`.specify/`, v0.9.0, Claude + sh scripts
 - `/speckit-analyze`, `/speckit-checklist` — quality gates.
 - Git extension skills: `/speckit-git-feature` (branch), `/speckit-git-commit`, `/speckit-git-validate`, `/speckit-git-remote`, `/speckit-git-initialize`.
 
-The `<!-- SPECKIT START -->`/`<!-- SPECKIT END -->` block below is managed by `/speckit-agent-context-update` — leave it for that tooling to maintain.
+The Spec Kit marker block at the bottom of this file is managed by
+`/speckit-agent-context-update` — leave it for that tooling to maintain.
 
 <!-- SPECKIT START -->
-For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+Active feature: `001-runboard-cli`. For technologies, project structure, shell
+commands, and design decisions, read the current plan and its design artifacts:
+
+- Plan: `specs/001-runboard-cli/plan.md`
+- Spec: `specs/001-runboard-cli/spec.md`
+- Research (library choices): `specs/001-runboard-cli/research.md`
+- Data model: `specs/001-runboard-cli/data-model.md`
+- Contracts: `specs/001-runboard-cli/contracts/` (CLI commands, MCP tools)
+- Quickstart: `specs/001-runboard-cli/quickstart.md`
 <!-- SPECKIT END -->

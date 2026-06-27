@@ -1,0 +1,20 @@
+# Roadmap — <%= it.date %>
+
+**Binding constraint: <%= it.constraint.title %>** (level <%= it.constraint.level %>, <%= it.constraint.trajectory %>).
+
+This is the lowest-scoring area dragging on everything above it. Start here.
+
+## Now (do these first)
+
+<% it.now.forEach(function(item){ %>- <%= item %>
+<% }) %>
+
+## Next
+
+<% it.next.forEach(function(item){ %>- <%= item %>
+<% }) %>
+
+## Later
+
+<% if (it.later.length === 0) { %>- Revisit after the Now items land and re-assess.<% } else { %><% it.later.forEach(function(item){ %>- <%= item %>
+<% }) %><% } %>

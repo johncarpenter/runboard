@@ -1,0 +1,22 @@
+# Technology Board Update — <%= it.date %>
+
+**Overall maturity: <%= it.average %> / 5.** <%= it.headline %>
+
+## Where we stand
+
+<% it.areas.forEach(function(area){ %>**<%= area.title %>** — average <%= area.average %> / 5. <%= area.comment %>
+<% }) %>
+
+## Biggest constraint
+
+Our most limiting area is **<%= it.constraint.title %>** (level <%= it.constraint.level %>). In business terms: <%= it.constraintBusiness %>
+
+## What we're doing about it
+
+<% it.now.forEach(function(item){ %>- <%= item %>
+<% }) %>
+
+## Risks to watch
+
+<% if (it.triggers.length === 0) { %>No areas are stuck or regressing.<% } else { %><% it.triggers.forEach(function(t){ %>- **<%= t %>** has not improved across recent reviews.
+<% }) %><% } %>

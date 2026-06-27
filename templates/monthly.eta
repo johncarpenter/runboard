@@ -1,0 +1,8 @@
+# Monthly Update — <%= it.date %>
+
+Overall maturity **<%= it.average %> / 5**.
+
+<% it.areas.forEach(function(area){ %>- **<%= area.title %>**: <%= area.average %> / 5
+<% }) %>
+
+**Focus this month:** <%= it.constraint.title %> (level <%= it.constraint.level %>).

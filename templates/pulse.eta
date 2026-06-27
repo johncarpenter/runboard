@@ -1,0 +1,21 @@
+# Pulse — <%= it.date %>
+
+Comparing **<%= it.prevDate %>** → **<%= it.date %>**. Average <%= it.prevAverage %> → **<%= it.average %>** / 5.
+
+## What moved
+
+| Dimension | Was | Now | Change |
+|-----------|-----|-----|--------|
+<% it.deltas.forEach(function(d){ %>| <%= d.key %> | <%= d.from %> | <%= d.to %> | <%= d.change > 0 ? "+" + d.change : d.change %> |
+<% }) %>
+
+## Auto-triggers (flat or regressing across 3 assessments)
+
+<% if (it.triggers.length === 0) { %>None — nothing is stuck.<% } else { %><% it.triggers.forEach(function(t){ %>- **<%= t %>** has not improved in three consecutive assessments.
+<% }) %><% } %>
+
+## What moved and why it matters
+
+<% if (it.improved.length) { %>Progress in <%= it.improved.join(", ") %>.<% } %>
+<% if (it.regressed.length) { %>Watch <%= it.regressed.join(", ") %> — losing ground.<% } %>
+<% if (!it.improved.length && !it.regressed.length) { %>Steady state since the last assessment.<% } %>

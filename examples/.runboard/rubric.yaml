@@ -1,0 +1,95 @@
+# Runboard rubric — the 9-dimension technical-leadership maturity model.
+# Areas: build | run | plan.  Lenses: team | tools | techniques.
+# Levels: 1 Ad-hoc · 2 Repeatable · 3 Defined (target) · 4 Measured · 5 Optimising.
+version: "1.0.0"
+dimensions:
+  - key: build.team
+    area: build
+    lens: team
+    title: Build · Team
+    anchors:
+      1: "All delivery depends on contractors or heroics; no retained engineering capability."
+      2: "A core team exists but knowledge is concentrated in a few people; onboarding is informal."
+      3: "Roles and ownership are defined; the team can deliver without single points of failure."
+      4: "Team health and delivery capacity are measured and actively managed."
+      5: "The team continuously improves its own capability; hiring and growth are deliberate and data-informed."
+  - key: build.tools
+    area: build
+    lens: tools
+    title: Build · Tools
+    anchors:
+      1: "No shared build/CI; environments are set up by hand and differ per developer."
+      2: "Basic version control and some scripts exist, but builds are inconsistent."
+      3: "CI is in place; builds and environments are reproducible."
+      4: "Build/delivery metrics (lead time, failure rate) are tracked."
+      5: "Tooling is continuously optimised; investments are driven by measured developer-experience data."
+  - key: build.techniques
+    area: build
+    lens: techniques
+    title: Build · Techniques
+    anchors:
+      1: "No agreed engineering practices; quality is accidental."
+      2: "Some practices exist (reviews, tests) but are applied inconsistently."
+      3: "A defined delivery cadence and engineering standards are followed consistently."
+      4: "Practice effectiveness (coverage, defect escape) is measured."
+      5: "Practices evolve continuously based on outcome data; experimentation is routine."
+  - key: run.team
+    area: run
+    lens: team
+    title: Run · Team
+    anchors:
+      1: "No clear ownership of production; incidents are handled ad-hoc by whoever is around."
+      2: "Informal on-call exists; operational knowledge is concentrated."
+      3: "Clear operational ownership and a defined on-call rotation are in place."
+      4: "Operational load and responsiveness are measured and balanced."
+      5: "The team continuously reduces operational toil; reliability is a shared, optimised discipline."
+  - key: run.tools
+    area: run
+    lens: tools
+    title: Run · Tools
+    anchors:
+      1: "No monitoring; problems are discovered from users."
+      2: "Some monitoring exists but coverage is partial and alerting is noisy."
+      3: "Monitoring and alerting cover the critical paths."
+      4: "Service health and SLOs are measured against targets."
+      5: "Observability is continuously tuned; tooling pre-empts issues before users feel them."
+  - key: run.techniques
+    area: run
+    lens: techniques
+    title: Run · Techniques
+    anchors:
+      1: "No incident process; responses are improvised."
+      2: "A loose incident response exists but post-incident learning is rare."
+      3: "A defined incident process with blameless reviews is followed."
+      4: "Incident metrics (MTTR, recurrence) are measured."
+      5: "Operational practices continuously improve from incident and reliability data."
+  - key: plan.team
+    area: plan
+    lens: team
+    title: Plan · Team
+    anchors:
+      1: "No alignment between engineering and the business; comms are reactive."
+      2: "Some leadership comms exist but stakeholder alignment is inconsistent."
+      3: "Engineering leadership communicates clearly and is aligned with business goals."
+      4: "Alignment and stakeholder confidence are measured (e.g., via structured feedback)."
+      5: "Leadership continuously strengthens trust and influence; the function shapes strategy."
+  - key: plan.tools
+    area: plan
+    lens: tools
+    title: Plan · Tools
+    anchors:
+      1: "No roadmap or planning tooling; priorities live in someone's head."
+      2: "A basic backlog or roadmap exists but is not kept current."
+      3: "A maintained roadmap and planning tooling support prioritisation."
+      4: "Delivery against plan and outcome analytics are tracked."
+      5: "Planning tooling continuously informs strategy with measured outcome data."
+  - key: plan.techniques
+    area: plan
+    lens: techniques
+    title: Plan · Techniques
+    anchors:
+      1: "No strategy or prioritisation method; work is driven by whoever shouts loudest."
+      2: "Strategy is being established but prioritisation is inconsistent."
+      3: "A defined strategy and prioritisation method guide investment."
+      4: "Strategic bets and their outcomes are measured."
+      5: "Strategy continuously adapts from measured business and delivery outcomes."
