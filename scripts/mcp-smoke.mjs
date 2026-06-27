@@ -27,6 +27,9 @@ try {
   const version = client.getServerVersion()?.version;
   process.stdout.write(`MCP smoke OK — runboard ${version}, ${names.length} tools.\n`);
   await client.close();
+  // Exit explicitly: the spawned dist/mcp.js child could otherwise keep the event loop
+  // alive and hang CI if the transport's stdio cleanup is incomplete.
+  process.exit(0);
 } catch (err) {
   process.stderr.write(`MCP smoke FAILED: ${err instanceof Error ? err.message : String(err)}\n`);
   process.exit(1);

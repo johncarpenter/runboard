@@ -27,7 +27,10 @@ describe("version lockstep (FR-004, SC-003)", () => {
     const client = new Client({ name: "test", version: "0.0.0" });
     const [c, s] = InMemoryTransport.createLinkedPair();
     await Promise.all([server.connect(s), client.connect(c)]);
-    expect(client.getServerVersion()?.version).toBe(pkg.version);
-    await client.close();
+    try {
+      expect(client.getServerVersion()?.version).toBe(pkg.version);
+    } finally {
+      await client.close();
+    }
   });
 });
